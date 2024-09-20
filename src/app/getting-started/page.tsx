@@ -1,4 +1,4 @@
-export default function GettingStarted(){
+export default function Page(){
     return (
         <div>
             getting started

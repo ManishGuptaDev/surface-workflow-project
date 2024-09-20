@@ -30,7 +30,7 @@ const Sidebar: FC = () => {
           </Link>
         </div>
         <Divider />
-        <nav className="rounded-lg bg-white p-4 shadow-md">
+        <nav className="p-4">
           {menuItems.map((item) => (
             <MenuItem
               key={item.path}
