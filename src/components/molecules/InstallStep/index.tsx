@@ -1,14 +1,30 @@
 import { useCallback, useMemo, useState, type FC } from "react";
-import { CheckCircle } from "~/assets/icons";
+import { CheckCircle, InformationCircle } from "~/assets/icons";
 import Button from "~/components/atoms/Button";
+import Toaster from "~/components/atoms/Toaster/page";
+import { useNotification } from "~/lib/hooks/useNotification";
 import { generateRandomSurfaceTagId } from "~/lib/utils/helper";
+import { isUserRegistered } from "~/server/users";
+import ErrorInstructionsList from "./components/ErrorInstructionsList";
+import { STEP } from "~/lib/consts";
 
-const InstallStep: FC = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+type InstallStepProps = {
+  onConnectionPassed: () => void;
+  nextStep: () => void;
+  open: boolean;
+  onExpand: (step: STEP) => void;
+};
+
+const InstallStep: FC<InstallStepProps> = ({ onConnectionPassed, nextStep, open, onExpand }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [connestionPassed, setConnestionPassed] = useState<boolean | null>(
+    null,
+  );
+
+  const { notification, setNotificationState } = useNotification();
 
   // Generate the SURFACE_TAG_ID when the page loads
-  const surfaceTagId: string = useMemo(() => generateRandomSurfaceTagId(), [])  
+  const surfaceTagId: string = useMemo(() => generateRandomSurfaceTagId(), []);
 
   const sampleScript = `
 <script>
@@ -39,9 +55,47 @@ const InstallStep: FC = () => {
     }
   };
 
-  const handleTestConnection = useCallback(() => {
-    console.log();
-  }, []);
+  const handleTestConnection = useCallback(async () => {
+
+    if(connestionPassed) {
+      // if connection is passed then we can move to next step
+      nextStep();
+      return;
+    }
+
+    // set toast message
+    setNotificationState(
+      "#F1F4FD",
+      true,
+      <InformationCircle className="h-5 w-5" fill="#4159CF" />,
+      "Checking for Tag...",
+    );
+
+    const result = await isUserRegistered(surfaceTagId);
+    
+    if (result.registered) {
+      // connection passed
+      setNotificationState(
+        "#EFFAF6",
+        true,
+        <InformationCircle className="h-5 w-5" fill="#38C793" />,
+        "Connected successfully!",
+      );
+      setConnestionPassed(true);
+      onConnectionPassed();
+    } else {
+      // connection failed
+      setNotificationState(
+        "#FDEDF0",
+        true,
+        <InformationCircle className="h-5 w-5" fill="#DF1C41" />,
+        "We couldn’t detect the Surface Tag on your website. Please ensure the snippet is added correctly. ",
+        <ErrorInstructionsList />,
+      );
+      setConnestionPassed(false);
+    }
+    console.log(result);
+  }, [connestionPassed, nextStep, onConnectionPassed, setNotificationState, surfaceTagId]);
 
   return (
     <div className="shadow-[0px_1.2px_3.99px_0px_rgba(0,0,0,0.07), 0px_4.02px_13.4px_0px_rgba(0,0,0,0.11)] gap-[23px] rounded-[8px] border-2 border-[#EBEDF3] bg-white p-6">
@@ -55,16 +109,18 @@ const InstallStep: FC = () => {
             Enable tracking and analytics.
           </div>
         </div>
-        {!isExpanded && (
+        {!open && (
           <div className="ml-auto">
-            <Button color="primary" onClick={() => setIsExpanded(true)}>
+            <Button color="primary" onClick={() => onExpand(STEP.Install)}>
               Install tag
             </Button>
           </div>
         )}
       </div>
-      <div className={`transition-all duration-300 ease-in-out ${isExpanded ? 'max-h-screen' : 'max-h-0 overflow-hidden'}`}>
-        {isExpanded && (
+      <div
+        className={`transition-all duration-300 ease-in-out ${open ? "max-h-screen" : "max-h-0 overflow-hidden"}`}
+      >
+        {open && (
           <div className="mt-6 flex flex-col gap-6">
             <div className="relative rounded-xl border-2 border-[#E2E4E9] bg-[#F9F9F9] shadow-[0px_2px_4px_0px_rgba(27,28,29,0.04)]">
               <pre className="p-4">
@@ -76,11 +132,17 @@ const InstallStep: FC = () => {
                 </Button>
               </div>
             </div>
+            {notification && <Toaster {...notification} />}
+
             <div className="flex justify-between">
               <span></span>
               <div className="w-fit">
                 <Button color="primary" onClick={handleTestConnection}>
-                  Test connection
+                  {connestionPassed === true
+                    ? "Next step"
+                    : connestionPassed === false
+                      ? "Try again"
+                      : "Test Connection"}
                 </Button>
               </div>
             </div>
