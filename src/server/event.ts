@@ -15,3 +15,13 @@ export const saveEvent = async (name: string, surfaceTagId: string, metaData: ob
     // Return a success message indicating that the event has been created
     return { created: true, message: 'Event saved successfully', eventId: newEvent.id };
 }
+
+export const fetchEvents = async (surfaceTagId: string,) => {
+    const events = await db.event.findMany({
+        where: {
+            surfaceTagId : surfaceTagId
+        }
+    });
+
+    return events;
+}

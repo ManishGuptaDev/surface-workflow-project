@@ -1,7 +1,10 @@
-import { type FC } from "react";
+import { useCallback, useEffect, useState, type FC } from "react";
+import { type Event } from "@prisma/client";
 import { CheckCircle } from "~/assets/icons";
 import Button from "~/components/atoms/Button";
 import { STEP } from "~/lib/consts";
+import { fetchEvents } from "~/server/event";
+import EventsTable from "../EventsTable";
 
 type TestStepProps = {
   open: boolean;
@@ -10,6 +13,19 @@ type TestStepProps = {
 };
 
 const TestStep: FC<TestStepProps> = ({ open, onExpand, surfaceTagId }) => {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  const getAllEvents = useCallback(async (tagId: string) => {
+    const allTagEvents = await fetchEvents(tagId);
+    setEvents(allTagEvents);
+  }, []);
+
+  useEffect(() => {
+    if (surfaceTagId) {
+      void getAllEvents(surfaceTagId);
+    }
+  }, [getAllEvents, surfaceTagId]);
+
   return (
     <div className="shadow-[0px_1.2px_3.99px_0px_rgba(0,0,0,0.07), 0px_4.02px_13.4px_0px_rgba(0,0,0,0.11)] gap-[23px] rounded-[8px] border-2 border-[#EBEDF3] bg-white p-6">
       <div className="flex flex-row items-center gap-4">
@@ -39,7 +55,9 @@ const TestStep: FC<TestStepProps> = ({ open, onExpand, surfaceTagId }) => {
       >
         {open && (
           <div className="mt-6 flex flex-col gap-6">
-            <div className="relative rounded-xl border-2 border-[#E2E4E9] bg-[#F9F9F9] shadow-[0px_2px_4px_0px_rgba(27,28,29,0.04)]"></div>
+            <div className="relative rounded-xl border-2 border-[#E2E4E9] bg-[#F9F9F9] shadow-[0px_2px_4px_0px_rgba(27,28,29,0.04)]">
+              <EventsTable events={events} />
+            </div>
 
             <div className="flex justify-between">
               <span></span>
@@ -47,7 +65,7 @@ const TestStep: FC<TestStepProps> = ({ open, onExpand, surfaceTagId }) => {
                 <Button
                   color="primary"
                   onClick={() => {
-                    console.log("clicked");
+                    void getAllEvents(surfaceTagId)
                   }}
                 >
                   Test Tag
