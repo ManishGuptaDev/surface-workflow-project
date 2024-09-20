@@ -9,7 +9,7 @@ import ErrorInstructionsList from "./components/ErrorInstructionsList";
 import { STEP } from "~/lib/consts";
 
 type InstallStepProps = {
-  onConnectionPassed: () => void;
+  onConnectionPassed: (tagId: string) => void;
   nextStep: () => void;
   open: boolean;
   onExpand: (step: STEP) => void;
@@ -82,7 +82,7 @@ const InstallStep: FC<InstallStepProps> = ({ onConnectionPassed, nextStep, open,
         "Connected successfully!",
       );
       setConnestionPassed(true);
-      onConnectionPassed();
+      onConnectionPassed(surfaceTagId);
     } else {
       // connection failed
       setNotificationState(

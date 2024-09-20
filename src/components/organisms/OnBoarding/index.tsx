@@ -7,11 +7,11 @@ import { STEP } from "~/lib/consts";
 
 
 const OnBoarding: FC = () => {
-  const [isInstallDone, setIsInstallDone] = useState(false);
+  const [surfaceTagId, setSurfaceTagId] = useState<string>("");
   const [activeStep, setActiveStep] = useState<STEP | null >();
 
-  const onConnectionPassed = useCallback(() => {
-    setIsInstallDone(true)
+  const onConnectionPassed = useCallback((tagId: string) => {
+    setSurfaceTagId(tagId)
   }, [])
 
   const nextStep = useCallback(() => {
@@ -25,7 +25,7 @@ const OnBoarding: FC = () => {
   return (
     <div className="mt-4 flex flex-col gap-4">
       <InstallStep onConnectionPassed={onConnectionPassed} nextStep={nextStep} open={activeStep === STEP.Install} onExpand={onExpand} />
-      <TestStep isDisable={!isInstallDone} open={activeStep === STEP.Test}  onExpand={onExpand}/>
+      <TestStep open={activeStep === STEP.Test}  onExpand={onExpand} surfaceTagId={surfaceTagId} />
     </div>
   );
 };

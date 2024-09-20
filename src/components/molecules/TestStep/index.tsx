@@ -4,12 +4,12 @@ import Button from "~/components/atoms/Button";
 import { STEP } from "~/lib/consts";
 
 type TestStepProps = {
-  isDisable: boolean;
   open: boolean;
   onExpand: (step: STEP) => void;
+  surfaceTagId: string;
 };
 
-const TestStep: FC<TestStepProps> = ({ isDisable, open, onExpand }) => {
+const TestStep: FC<TestStepProps> = ({ open, onExpand, surfaceTagId }) => {
   return (
     <div className="shadow-[0px_1.2px_3.99px_0px_rgba(0,0,0,0.07), 0px_4.02px_13.4px_0px_rgba(0,0,0,0.11)] gap-[23px] rounded-[8px] border-2 border-[#EBEDF3] bg-white p-6">
       <div className="flex flex-row items-center gap-4">
@@ -26,7 +26,7 @@ const TestStep: FC<TestStepProps> = ({ isDisable, open, onExpand }) => {
           <div className="ml-auto">
             <Button
               color="primary"
-              isDisabled={isDisable}
+              isDisabled={surfaceTagId.length === 0}
               onClick={() => onExpand(STEP.Test)}
             >
               Test tag

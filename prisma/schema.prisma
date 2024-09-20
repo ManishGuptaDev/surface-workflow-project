@@ -22,5 +22,6 @@ model Event {
   name         String
   metadata     Json
   surfaceTagId String
+  visitorId    String   @default("")
   createdAt    DateTime @default(now())
 }
