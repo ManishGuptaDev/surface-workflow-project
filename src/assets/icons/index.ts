@@ -8,3 +8,4 @@ export { default as Lead } from "./Lead";
 export { default as Workflow } from "./Workflow";
 export { default as Segment } from "./Segment";
 export { default as Integration } from "./Integration";
+export { default as CheckFilledCircle } from "./CheckFilledCircle";

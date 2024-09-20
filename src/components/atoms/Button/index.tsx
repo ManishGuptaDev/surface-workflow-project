@@ -18,16 +18,18 @@ const Button: React.FC<ButtonProps> = ({
   children,
 }) => {
   // Define base styles
-  const baseStyles = 'flex items-center flex-start px-4 py-0 rounded-[6px] border transition duration-200 w-full';
+  const baseStyles =
+    "flex items-center flex-start rounded-[6px] transition duration-200 w-full h-[40px] px-[16px] py-[0] gap-[12px]";
 
   // Define color styles based on the color prop
-  const colorStyles =
-    color === "primary"
-      ? "bg-blue-500 text-white hover:bg-blue-600"
-      : "bg-[#383F50] text-white border border-[#F0F0F0] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.1)]";
+  const colorStyles = isDisabled
+    ? "bg-[#F1F1F2] text-[#5F6065] cursor-not-allowed" // Styles for disabled state
+    : color === "primary"
+      ? "bg-[#2F64EE] text-white hover:bg-blue-600"
+      : "bg-[#383F50] text-white shadow-[0px_1px_5px_0px_rgba(0,0,0,0.1)]";
 
   // Combine all styles
-  const buttonStyles = `${baseStyles} ${colorStyles} ${isDisabled ? "opacity-0 cursor-not-allowed" : ""} w-[241px] h-[40px] px-[16px] py-[0] gap-[12px]`;
+  const buttonStyles = `${baseStyles} ${colorStyles}`;
 
   return (
     <button

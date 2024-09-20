@@ -3,9 +3,9 @@ import Sidebar from "../organisms/Sidebar";
 
 const AppLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="flex flex-row gap-4">
+    <div className="flex flex-row">
       <Sidebar />
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 m-8">{children}</div>
     </div>
   );
 };
