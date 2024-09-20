@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { type FC } from "react";
+import Image from "next/image";
 import { CheckCircle } from "~/assets/icons";
 import Button from "~/components/atoms/Button";
 import Divider from "~/components/atoms/Divider";
 import MenuItem from "~/components/molecules/MenuItem";
 import Workspace from "~/components/molecules/Workspace";
 import { menuItems } from "~/lib/consts/menuItems";
+
+// Sample user data
+const user = {
+  name: "Chris Hood",
+  email: "hello@example.com",
+  avatarUrl: "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
+};
 
 const Sidebar: FC = () => {
   return (
@@ -40,6 +48,19 @@ const Sidebar: FC = () => {
             />
           ))}
         </nav>
+      </div>
+      <div className="mb-4 mt-auto flex items-center justify-center">
+        <Image
+          src={user.avatarUrl}
+          alt={`${user.name}'s avatar`}
+          width={40}
+          height={40}
+          className="rounded-full border border-gray-300"
+        />
+        <div className="ml-3">
+          <p className="text-[#383F50] font-medium">{user.name}</p>
+          <p className="text-sm text-gray-600">{user.email}</p>
+        </div>
       </div>
     </div>
   );
