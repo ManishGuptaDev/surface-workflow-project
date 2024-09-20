@@ -27,7 +27,7 @@ const TestStep: FC<TestStepProps> = ({ open, onExpand, surfaceTagId }) => {
   }, [getAllEvents, surfaceTagId]);
 
   return (
-    <div className="shadow-[0px_1.2px_3.99px_0px_rgba(0,0,0,0.07), 0px_4.02px_13.4px_0px_rgba(0,0,0,0.11)] gap-[23px] rounded-[8px] border-2 border-[#EBEDF3] bg-white p-6">
+    <div className="shadow-[0px_1.2px_3.99px_0px_rgba(0,0,0,0.07), 0px_4.02px_13.4px_0px_rgba(0,0,0,0.11)] rounded-[8px] border-2 border-[#EBEDF3] bg-white p-6">
       <div className="flex flex-row items-center gap-4">
         <CheckCircle stroke="grey" />
         <div className="flex flex-col gap-1">
@@ -51,7 +51,7 @@ const TestStep: FC<TestStepProps> = ({ open, onExpand, surfaceTagId }) => {
         )}
       </div>
       <div
-        className={`transition-all duration-300 ease-in-out ${open ? "max-h-screen" : "max-h-0 overflow-hidden"}`}
+        className={`transition-all duration-300 ease-in-out ${open ? "max-h-full" : "max-h-0 overflow-hidden"}`}
       >
         {open && (
           <div className="mt-6 flex flex-col gap-6">

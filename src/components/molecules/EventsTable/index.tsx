@@ -19,14 +19,14 @@ const EventsTable: FC<EventsTableProps> = ({ events }) => {
           key={event.id}
           className="grid grid-cols-4 gap-4 border-b px-6 py-4"
         >
-          <div>{event.name}</div>
-          <div>{event.visitorId || "-"}</div>
-          <div>
+          <div className="truncate">{event.name}</div>
+          <div className="truncate">{event.visitorId || "-"}</div>
+          <div className="truncate">
             {event.metadata && Object.keys(event.metadata).length > 0
               ? JSON.stringify(event.metadata)
               : "-"}
           </div>
-          <div>{new Date(event.createdAt).toLocaleString()}</div>
+          <div className="truncate">{new Date(event.createdAt).toLocaleString()}</div>
         </div>
       ))}
     </div>
