@@ -10,11 +10,7 @@ function initializeAnalytics() {
         // Register the user with the passed SURFACE_TAG_ID
         registerUser(surfaceTagId);
 
-        // Track script initialization
-        trackEvent('script_init');
-
-        // Add event listeners for tracking
-        addEventListeners();
+        
     } else {
         console.error('SURFACE_TAG_ID is missing in the script tag');
     }
@@ -32,6 +28,12 @@ function registerUser(surfaceTagId) {
     .then(response => response.json())
     .then(data => {
         console.log('User registered:', data);
+        
+        // Track script initialization
+        trackEvent('script_init');
+
+        // Add event listeners for tracking
+        addEventListeners();
     })
     .catch(error => {
         console.error('Error registering user:', error);
