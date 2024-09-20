@@ -1,10 +1,14 @@
-import { useCallback, useState, type FC } from "react";
+import { useCallback, useMemo, useState, type FC } from "react";
 import { CheckCircle } from "~/assets/icons";
 import Button from "~/components/atoms/Button";
+import { generateRandomSurfaceTagId } from "~/lib/utils/helper";
 
 const InstallStep: FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
+  // Generate the SURFACE_TAG_ID when the page loads
+  const surfaceTagId: string = useMemo(() => generateRandomSurfaceTagId(), [])  
 
   const sampleScript = `
 <script>
@@ -18,9 +22,10 @@ const InstallStep: FC = () => {
       j = d.createElement(s),
       dl = l != 'surface' ? '&l=' + l : '';
     j.async = true;
-    j.src = 'https://www.surface-analytics.com/tag.js?id=' + i + dl;
+    j.src = 'http://localhost:3000/surface_analytics.js?id=' + i + dl;
+    j.setAttribute('data-tag-id', i);
     f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'surface', 'SURFACE_TAG_ID');
+  })(window, document, 'script', 'surface', '${surfaceTagId}');
 </script>
   `;
 
