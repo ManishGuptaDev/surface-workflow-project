@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { type FC } from "react";
-import { CheckCircle, Home } from "~/assets/icons";
+import { CheckCircle } from "~/assets/icons";
 import Button from "~/components/atoms/Button";
 import Divider from "~/components/atoms/Divider";
 import MenuItem from "~/components/molecules/MenuItem";
