@@ -1,3 +1,4 @@
+import { registerUser } from "~/server/users";
 
 type RegisterPayload = {
     surfaceTagId: string;
@@ -5,5 +6,6 @@ type RegisterPayload = {
 
 export async function POST(request: Request) {
     const res = await request.json() as RegisterPayload
-    return Response.json({ res })
+    const result = await registerUser(res.surfaceTagId) 
+    return Response.json({ result });
   }
