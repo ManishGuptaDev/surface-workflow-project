@@ -17,6 +17,7 @@ type InstallStepProps = {
 
 const InstallStep: FC<InstallStepProps> = ({ onConnectionPassed, nextStep, open, onExpand }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const [checking, setChecking] = useState(false);
   const [connestionPassed, setConnestionPassed] = useState<boolean | null>(
     null,
   );
@@ -63,6 +64,7 @@ const InstallStep: FC<InstallStepProps> = ({ onConnectionPassed, nextStep, open,
       return;
     }
 
+    setChecking(true);
     // set toast message
     setNotificationState(
       "#F1F4FD",
@@ -94,13 +96,30 @@ const InstallStep: FC<InstallStepProps> = ({ onConnectionPassed, nextStep, open,
       );
       setConnestionPassed(false);
     }
-    console.log(result);
+    setChecking(false);
+
   }, [connestionPassed, nextStep, onConnectionPassed, setNotificationState, surfaceTagId]);
+
+  const getCheckCircleIcon = () => {
+    if (connestionPassed) {
+      return <CheckCircle stroke="#38C793" fill="#EFFAF6" />;
+    }
+
+    if(connestionPassed === false) {
+      return <CheckCircle stroke="#DF1C41" fill="#FDEDF0" />;
+    }
+  
+    if (open) {
+      return <CheckCircle stroke="#B5C7F9" fill="#2F64EE1A" />;
+    }
+  
+    return <CheckCircle stroke="grey" />
+  };
 
   return (
     <div className="shadow-[0px_1.2px_3.99px_0px_rgba(0,0,0,0.07), 0px_4.02px_13.4px_0px_rgba(0,0,0,0.11)] rounded-[8px] border-2 border-[#EBEDF3] bg-white p-6">
       <div className="flex flex-row items-center gap-4">
-        <CheckCircle stroke="grey" />
+        {getCheckCircleIcon()}
         <div className="flex flex-col gap-1">
           <div className="font-pretendard text-[18px] font-medium leading-[21.48px] tracking-[0.1px]">
             Install Surface Tag on your site
@@ -137,7 +156,7 @@ const InstallStep: FC<InstallStepProps> = ({ onConnectionPassed, nextStep, open,
             <div className="flex justify-between">
               <span></span>
               <div className="w-fit">
-                <Button color="primary" onClick={handleTestConnection}>
+                <Button color="primary" onClick={handleTestConnection} isDisabled={checking}>
                   {connestionPassed === true
                     ? "Next step"
                     : connestionPassed === false
